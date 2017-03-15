@@ -11,10 +11,27 @@
 	{@param? style: string}
 	{@param? type: string}
 	{@param? value: string}
+	{@param? attributes: map<any,any>}
 	<button
+		{call .renderAttributes data="all" /}
 		class="btn btn-{$style ? $style : 'default'}{$size ? ' btn-' + $size : ''}
 		{$block ? ' btn-block' : ''}"
 		{if $disabled}disabled{/if}
 		type="{$type ? $type : ''}"
-		value="{$value ? $value : ''}">{$label ? $label : ''}</button>
+		value="{$value ? $value : ''}">{$label ? $label : ''}
+		</button>
 {/template}
+
+/**
+ * This renders the component's whole content.
+ */
+{template .renderAttributes kind="attributes"}
+	{@param? attributes: map<any,any>}
+
+	{if $attributes}
+		{foreach $key in keys($attributes)}
+			{$key}="{$attributes[$key]}"
+		{/foreach}
+	{/if}
+{/template}
+

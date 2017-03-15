@@ -52,6 +52,12 @@ MetalQuartzButton.STATE = {
 	style: {
 		validator: core.isString,
 		value: 'default'
+	},
+
+	attributes: {
+		value: {
+			name: 'teste'
+		}
 	}
 };
 
