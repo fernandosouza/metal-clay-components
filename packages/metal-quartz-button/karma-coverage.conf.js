@@ -2,6 +2,8 @@
 
 var isparta = require('isparta');
 
+var karmaHtml2JsPreprocessor = require('karma-html2js-preprocessor');
+
 var babelOptions = {
 	presets: ['metal'],
 	sourceMap: 'both'
@@ -9,39 +11,90 @@ var babelOptions = {
 
 module.exports = function (config) {
 	config.set({
-		frameworks: ['mocha', 'chai', 'source-map-support', 'commonjs'],
+		frameworks: ['browserify', 'mocha', 'chai', 'source-map-support'],
+
+		plugins: [...config.plugins, karmaHtml2JsPreprocessor],
 
 		files: [
-			'node_modules/metal-soy-bundle/build/bundle.js',
-			'node_modules/html2incdom/src/*.js',
-			'node_modules/metal*/src/**/*.js',
-			'src/**/*.js',
-			'test/**/*.js'
+			// {
+			// 	pattern: 'node_modules/metal-soy-bundle/lib/bundle.js',
+			// 	watched: false,
+			// 	included: true,
+			// 	served: true
+			// },
+
+			// {
+			// 	pattern: 'node_modules/html2incdom/lib/*.js',
+			// 	watched: false,
+			// 	included: true,
+			// 	served: true
+			// },
+
+			// {
+			// 	pattern: 'node_modules/metal*/lib/**/*.js',
+			// 	watched: false,
+			// 	included: true,
+			// 	served: true
+			// },
+
+			// {
+			// 	pattern: 'lib/**/*.soy.js',
+			// 	watched: false,
+			// 	included: true,
+			// 	served: true
+			// },
+			
+			{
+				pattern: 'test/fixture/*.html',
+				watched: false,
+				included: true,
+				served: true
+			},
+
+			{
+				pattern: 'test/**/*.js',
+				watched: false,
+				included: true,
+				served: true
+			}
+			// 'src/**/*.js',
 		],
 
+		cache: false,
+
+		logLevel: 'debug',
+
+		client: {
+ 			mocha: {
+ 					timeout: 4000
+ 			}
+ 		},
+
 		preprocessors: {
-			'src/**/!(*.soy).js': ['coverage', 'commonjs'],
-			'src/**/*.soy.js': ['babel', 'commonjs'],
-			'node_modules/html2incdom/src/*.js': ['babel', 'commonjs'],
-			'node_modules/metal-soy-bundle/build/bundle.js': ['commonjs'],
-			'node_modules/metal*/src/**/*.js': ['babel', 'commonjs'],
-			'test/**/*.js': ['babel', 'commonjs']
+			// 'src/**/!(*.soy).js': ['browserify'],
+			// 'lib/**/*.soy.js': ['browserify'],
+			// 'node_modules/metal-soy-bundle/lib/bundle.js': ['browserify'],
+			// 'node_modules/html2incdom/lib/*.js': ['browserify'],
+			// 'node_modules/metal*/lib/**/*.js': ['browserify'],
+			'test/fixture/*.html': 'html2js',
+			'test/**/*.js': ['browserify']
+		},
+
+		browserify: {
+			debug: true,
+			transform: [
+				[
+					'babelify',
+					{
+						// plugins: ['istanbul'],
+						presets: ['es2015']
+					}
+				]
+			]
 		},
 
 		browsers: ['Chrome'],
 
-		reporters: ['coverage', 'progress'],
-
-		babelPreprocessor: {options: babelOptions},
-
-		coverageReporter: {
-			instrumenters: {isparta : isparta},
-			instrumenter: {'**/*.js': 'isparta'},
-			instrumenterOptions: {isparta: {babel: babelOptions}},
-			reporters: [
-				{type: 'lcov', subdir: 'lcov'},
-				{type: 'text-summary'}
-			]
-		}
+		reporters: ['coverage', 'progress']
 	});
 };

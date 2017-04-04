@@ -1,10 +1,10 @@
 'use strict';
 
 import MetalQuartzButtonBase from './MetalQuartzButtonBase';
-import Soy from 'metal-soy';
+import Soy from '../../../node_modules/metal-soy';
 import {validators} from 'metal-state';
 
-import 'metal-quartz-icon';
+import MetalQuartzIcon from 'metal-quartz-icon';
 
 import templates from './MetalQuartzButton.soy.js';
 

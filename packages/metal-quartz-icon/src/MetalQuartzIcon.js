@@ -1,8 +1,8 @@
 'use strict';
 
-import Component from 'metal-component';
-import core from 'metal';
-import Soy from 'metal-soy';
+import Component from '../../../node_modules/metal-component';
+import core from '../../../node_modules/metal';
+import Soy from '../../../node_modules/metal-soy';
 
 import templates from './MetalQuartzIcon.soy.js';
 

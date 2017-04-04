@@ -1,6 +1,6 @@
 'use strict';
 
-import Component from 'metal-component';
+import Component from '../../../node_modules/metal-component';
 import {validators} from 'metal-state';
 
 /**
