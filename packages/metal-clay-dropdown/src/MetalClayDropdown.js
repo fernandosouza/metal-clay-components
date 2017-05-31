@@ -3,7 +3,8 @@
 import Component from 'metal-component';
 import dom from 'metal-dom';
 import Soy from 'metal-soy';
-import { EventHandler } from 'metal-events';
+import { Align } from 'metal-position';
+import Dropdown from 'metal-dropdown';
 import { Config } from 'metal-state';
 
 import 'metal-clay-icon';
@@ -13,85 +14,53 @@ import templates from './MetalClayDropdown.soy';
 /**
  * Dropdown Metal Quartz component.
  */
-class MetalClayDropdown extends Component {
+class MetalClayDropdown extends Dropdown {
 	/**
 	 * @inheritDoc
-	 */
-	attached() {
-		super.attached();
-		this.eventHandler_.add(dom.on(document, 'click', this.handleDocClick_.bind(this)));
-	}
-
-	/**
-	 * @inheritDoc
+	 * @override
 	 */
 	created() {
-		this.eventHandler_ = new EventHandler();
+		super.created();
 
 		MetalClayDropdown.instances.push(this);
 
-		this.on('expandedChanged', this.syncDropdownState_);
-		this.syncDropdownState_();
+		this.maybeBindDelegatedToggler_();
 	}
 
 	/**
 	 * @inheritDoc
-	 */
-	detached() {
-		super.detached();
-		this.eventHandler_.removeAllListeners();
-	}
-
-	/**
-	 * Closes the dropdown.
-	 */
-	close() {
-		this.expanded = false;
-	}
-
-	/**
-	 * Checks if the dropdown is currently open.
-	 * @return {boolean}
-	 */
-	isOpen() {
-		return this.expanded;
-	}
-
-	/**
-	 * Handles document click in order to hide menu.
-	 * @param {!Event} event
-	 * @protected
+	 * @override
 	 */
 	handleDocClick_(event) {
-		if (this.element.contains(event.target)) {
+		let { target } = event;
+
+		if (this.alignElementSelector && dom.match(target, this.alignElementSelector)) {
 			return;
 		}
 
-		if (this.expanded) {
-			this.close();
+		super.handleDocClick_(event);
+	}
+
+	/**
+	 * Listen to the click event on the givin alignELementSelector.
+	 * @protected
+	 */
+	maybeBindDelegatedToggler_() {
+		if (this.alignElementSelector) {
+			dom.on(this.alignElementSelector, 'click', this.toggle.bind(this));
 		}
 	}
 
 	/**
-	 * Opens the dropdown.
+	 * @inheritDoc
+	 * @override
 	 */
-	open() {
-		this.expanded = true;
-	}
-
-	/**
-	 * Syncs the dropdown css based on the expanded state.
-	 * @protected
-	 */
-	syncDropdownState_() {
-		this.dropdownState = this.expanded ? ` ${this.dropdownOpenClass}` : '';
-	}
-
-	/**
-	 * Toggles the dropdown, closing it when open or opening it when closed.
-	 */
-	toggle() {
-		this.expanded = !this.expanded;
+	syncExpanded(expanded) {
+		let alignElement = this.refs.toggler || document.querySelector(this.alignElementSelector);
+		if (expanded && alignElement) {
+			let bodyElement = this.refs.dropdownmenu;
+			this.alignedPosition = Align.align(bodyElement, alignElement, this.position);
+		}
 	}
 }
 
@@ -147,15 +116,6 @@ MetalClayDropdown.STATE = {
 	 * @default undefined
 	 */
 	dropdownToggle: Config.object(),
-
-	/**
-	 * Flag indicating if the dropdown is expanded (open) or not.
-	 * @instance
-	 * @memberof MetalClayDropdown
-	 * @type {boolean}
-	 * @default false
-	 */
-	expanded: Config.bool().value(false),
 
 	/**
 	 * The dropdown's header content.

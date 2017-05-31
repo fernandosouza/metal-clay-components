@@ -4,7 +4,10 @@
  * This renders a Metal Clay Dropdown component.
  */
 {template .render}
+	{@param? alignedPosition: int}
+	{@param? alignElementSelector: string}
 	{@param? body: html}
+	{@param? classMap: ?}
 	{@param? dropdownContainerElement: string}
 	{@param? dropdownItems: list<[
 		component: string,
@@ -12,7 +15,7 @@
 		href: string,
 		label: string
 	]>}
-	{@param? dropdownState: string}
+	{@param? dropdownOpenClass: string}
 	{@param? dropdownToggle: [
 		elementClasses: string,
 		href: string,
@@ -23,17 +26,36 @@
 		],
 		label: string
 	]}
+	{@param? expanded: bool}
 	{@param? header: html}
+	{@param? position: int}
 	{@param? renderDropdownMenu: bool}
 
+	{let $classes: $classMap ? $classMap : ['dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown'] /}
+	{let $currentPosition: $alignedPosition ?: $position /}
+	{let $positionClass: isNonnull($currentPosition) ? $classes[$currentPosition] : 'dropdown' /}
+
+	{let $elementClasses kind="text"}
+		{$positionClass}
+		{if $expanded}
+			{sp}{$dropdownOpenClass ?: 'show'}
+		{/if}
+		{if $alignElementSelector}
+			{sp}relative-target
+		{/if}
+	{/let}
+
 	{call .containerTag}
-		{param classes: 'dropdown' + $dropdownState /}
+		{param classes: $elementClasses /}
 		{param containerElement: $dropdownContainerElement /}
 		{param content kind="html"}
-			{call .dropdownToggle}
-				{param dropdownToggle: $dropdownToggle /}
-				{param header: $header /}
-			{/call}
+			{if isNonnull($alignElementSelector)}
+				{call .dropdownToggle}
+					{param alignElementSelector: $alignElementSelector /}
+					{param dropdownToggle: $dropdownToggle /}
+					{param header: $header /}
+				{/call}
+			{/if}
 
 			{if $renderDropdownMenu}
 				{call .dropdownItems}
@@ -85,13 +107,13 @@
 		{$header}
 	{elseif $dropdownToggle}
 		{if $dropdownToggle.href}
-			<a class="{$dropdownToggle.elementClasses}" data-onclick="toggle" href="{$dropdownToggle.href}">
+			<a class="{$dropdownToggle.elementClasses}" data-onclick="toggle" href="{$dropdownToggle.href}" ref="toggler">
 				{call .dropdownToggleContent}
 					{param dropdownToggle: $dropdownToggle /}
 				{/call}
 			</a>
 		{else}
-			<button class="{$dropdownToggle.elementClasses}" data-onclick="toggle">
+			<button class="{$dropdownToggle.elementClasses}" data-onclick="toggle" ref="toggler">
 				{call .dropdownToggleContent}
 					{param dropdownToggle: $dropdownToggle /}
 				{/call}
@@ -115,7 +137,7 @@
 	{if $body}
 		{$body}
 	{elseif $dropdownItems}
-		<div class="dropdown-menu">
+		<div class="dropdown-menu" ref="dropdownmenu">
 			{foreach $item in $dropdownItems}
 				{let $elementClasses kind="text"}
 					{if $item.elementClasses}
