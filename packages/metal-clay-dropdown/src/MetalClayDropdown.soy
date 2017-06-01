@@ -49,7 +49,7 @@
 		{param classes: $elementClasses /}
 		{param containerElement: $dropdownContainerElement /}
 		{param content kind="html"}
-			{if isNonnull($alignElementSelector)}
+			{if not $alignElementSelector}
 				{call .dropdownToggle}
 					{param alignElementSelector: $alignElementSelector /}
 					{param dropdownToggle: $dropdownToggle /}
