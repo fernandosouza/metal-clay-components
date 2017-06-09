@@ -25,6 +25,20 @@ class MetalClayDropdown extends Dropdown {
 		MetalClayDropdown.instances.push(this);
 
 		this.maybeBindDelegatedToggler_();
+
+		this.eventHandler_.add(dom.on(document, 'keydown', this.handleESCPress_.bind(this)));
+	}
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
+	close() {
+		super.close();
+		let alignElement = this.getTogglerElement_();
+		if (alignElement) {
+			alignElement.focus();
+		}
 	}
 
 	/**
@@ -34,6 +48,10 @@ class MetalClayDropdown extends Dropdown {
 	handleDocClick_(event) {
 		let { target } = event;
 
+		if (!this.expanded) {
+			return;
+		}
+
 		if (this.alignElementSelector && dom.match(target, this.alignElementSelector)) {
 			return;
 		}
@@ -42,6 +60,17 @@ class MetalClayDropdown extends Dropdown {
 	}
 
 	/**
+	 * Handles keypress in order to select the next or the previous available
+	 * item.
+	 * @param {!Event} event
+	 * @protected
+	 */
+	handleESCPress_(event) {
+		if (event.keyCode === 27 && this.expanded) {
+			this.close();
+		}
+	}
+
 	 * Listen to the click event on the givin alignELementSelector.
 	 * @protected
 	 */
@@ -49,6 +78,16 @@ class MetalClayDropdown extends Dropdown {
 		if (this.alignElementSelector) {
 			dom.on(this.alignElementSelector, 'click', this.toggle.bind(this));
 		}
+	}
+
+	/**
+	 * Returns the element responsible for toggling the visibility of the menu 
+	 * that can be that rendered by the soy file or one that matches with the 
+	 * given alignElementSelector attribute.
+	 * @protected
+	 */
+	getTogglerElement_() {
+		return this.refs.toggler || document.querySelector(this.alignElementSelector);
 	}
 
 	/**
