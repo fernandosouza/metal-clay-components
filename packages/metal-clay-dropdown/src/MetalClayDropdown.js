@@ -6,6 +6,7 @@ import Soy from 'metal-soy';
 import { Align } from 'metal-position';
 import Dropdown from 'metal-dropdown';
 import { Config } from 'metal-state';
+import MetalClayDropdownFocusManager from './MetalClayDropdownFocusManager';
 
 import 'metal-clay-icon';
 
@@ -25,6 +26,8 @@ class MetalClayDropdown extends Dropdown {
 		MetalClayDropdown.instances.push(this);
 
 		this.maybeBindDelegatedToggler_();
+
+		this.keyboarNavigationConfig_();
 
 		this.eventHandler_.add(dom.on(document, 'keydown', this.handleESCPress_.bind(this)));
 	}
@@ -71,6 +74,16 @@ class MetalClayDropdown extends Dropdown {
 		}
 	}
 
+	/**
+	 * Configure the component for deal with focus management. It is helpful
+	 * for change the focus accross menu options.
+	 * @protected
+	 */
+	keyboarNavigationConfig_() {
+		this.keyBoardManager = new MetalClayDropdownFocusManager(this, '.dropdown-item');
+	}
+
+	/**
 	 * Listen to the click event on the givin alignELementSelector.
 	 * @protected
 	 */
@@ -95,10 +108,16 @@ class MetalClayDropdown extends Dropdown {
 	 * @override
 	 */
 	syncExpanded(expanded) {
-		let alignElement = this.refs.toggler || document.querySelector(this.alignElementSelector);
-		if (expanded && alignElement) {
-			let bodyElement = this.refs.dropdownmenu;
-			this.alignedPosition = Align.align(bodyElement, alignElement, this.position);
+		let alignElement = this.getTogglerElement_();
+		if (alignElement) {
+			if (expanded) {
+				let bodyElement = this.refs.dropdownmenu;
+				this.alignedPosition = Align.align(bodyElement, alignElement, this.position);
+				this.keyBoardManager.start();
+			}
+			else {
+				this.keyBoardManager.stop();
+			}
 		}
 	}
 }

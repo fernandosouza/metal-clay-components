@@ -28,11 +28,12 @@
   ],
   "dependencies": {
     "metal": "^2.0.0",
+    "metal-clay-icon": "^0.0.0",
     "metal-component": "^2.0.0",
     "metal-dom": "^2.0.0",
     "metal-dropdown": "^2.0.0",
     "metal-events": "^2.0.0",
-    "metal-clay-icon": "^0.0.0",
+    "metal-keyboard-focus": "^2.0.1",
     "metal-position": "^2.1.0",
     "metal-soy": "^2.0.0"
   },

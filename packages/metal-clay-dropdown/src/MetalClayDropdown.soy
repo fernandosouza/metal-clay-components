@@ -154,11 +154,11 @@
 						<div class="dropdown-divider{$elementClasses}"></div>
 					{default}
 						{if $item.href}
-							<a class="dropdown-item{$elementClasses}" href="{$item.href}">
+							<a class="dropdown-item{$elementClasses}" ref="el-{index($item)}" href="{$item.href}">
 								{$item.label ?: ''}
 							</a>
 						{else}
-							<button class="dropdown-item{$elementClasses}">
+							<button class="dropdown-item{$elementClasses}" ref="el-{index($item)}">
 								{$item.label ?: ''}
 							</button>
 						{/if}
