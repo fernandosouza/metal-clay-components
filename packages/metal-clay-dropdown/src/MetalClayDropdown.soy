@@ -4,10 +4,8 @@
  * This renders a Metal Clay Dropdown component.
  */
 {template .render}
-	{@param? alignedPosition: int}
 	{@param? alignElementSelector: string}
 	{@param? body: html}
-	{@param? classMap: ?}
 	{@param? dropdownContainerElement: string}
 	{@param? dropdownItems: list<[
 		component: string,
@@ -28,15 +26,10 @@
 	]}
 	{@param? expanded: bool}
 	{@param? header: html}
-	{@param? position: int}
 	{@param? renderDropdownMenu: bool}
 
-	{let $classes: $classMap ? $classMap : ['dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown', 'dropdown'] /}
-	{let $currentPosition: $alignedPosition ?: $position /}
-	{let $positionClass: isNonnull($currentPosition) ? $classes[$currentPosition] : 'dropdown' /}
-
 	{let $elementClasses kind="text"}
-		{$positionClass}
+		dropdowns
 		{if $expanded}
 			{sp}{$dropdownOpenClass ?: 'show'}
 		{/if}
