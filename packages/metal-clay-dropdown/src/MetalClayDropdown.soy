@@ -107,13 +107,20 @@
 		{$header}
 	{elseif $dropdownToggle}
 		{if $dropdownToggle.href}
-			<a class="{$dropdownToggle.elementClasses}" data-onclick="toggle" href="{$dropdownToggle.href}" ref="toggler">
+			<a
+				class="{$dropdownToggle.elementClasses}"
+				data-onclick="toggle"
+				href="{$dropdownToggle.href}"
+				ref="toggler">
 				{call .dropdownToggleContent}
 					{param dropdownToggle: $dropdownToggle /}
 				{/call}
 			</a>
 		{else}
-			<button class="{$dropdownToggle.elementClasses}" data-onclick="toggle" ref="toggler">
+			<button
+				class="{$dropdownToggle.elementClasses}"
+				data-onclick="toggle"
+				ref="toggler">
 				{call .dropdownToggleContent}
 					{param dropdownToggle: $dropdownToggle /}
 				{/call}
@@ -154,11 +161,18 @@
 						<div class="dropdown-divider{$elementClasses}"></div>
 					{default}
 						{if $item.href}
-							<a class="dropdown-item{$elementClasses}" ref="el-{index($item)}" href="{$item.href}">
+							<a
+								class="dropdown-item{$elementClasses}"
+								data-onclick="itemClick_"
+								href="{$item.href}"
+								ref="el-{index($item)}">
 								{$item.label ?: ''}
 							</a>
 						{else}
-							<button class="dropdown-item{$elementClasses}" ref="el-{index($item)}">
+							<button
+								class="dropdown-item{$elementClasses}"
+								data-onclick="itemClick_"
+								ref="el-{index($item)}">
 								{$item.label ?: ''}
 							</button>
 						{/if}

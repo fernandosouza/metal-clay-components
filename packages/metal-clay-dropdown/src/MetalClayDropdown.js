@@ -73,6 +73,16 @@ class MetalClayDropdown extends Dropdown {
 			this.close();
 		}
 	}
+	
+	/**
+	 * Listen to the click event on each non-layout element inside the menu and 
+	 * emits an event for components subscribed.
+	 * @param {!Event} event
+	 * @protected
+	 */
+	itemClick_(event) {
+		this.emit('onItemClicked', event);
+	}
 
 	/**
 	 * Configure the component for deal with focus management. It is helpful
@@ -119,6 +129,15 @@ class MetalClayDropdown extends Dropdown {
 				this.keyBoardManager.stop();
 			}
 		}
+	}
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
+	toggle(event) {
+		super.toggle();
+		this.emit('onToggled', event);
 	}
 }
 
@@ -167,7 +186,7 @@ MetalClayDropdown.STATE = {
 	dropdownContainerElement: Config.string().value('div'),
 
 	/**
-	 * The configuration for the dropdown-toggle
+	 * The configuration object for the dropdown-toggle element.
 	 * @instance
 	 * @memberof MetalClayDropdown
 	 * @type {!Object|undefined}
