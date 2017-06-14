@@ -1,6 +1,7 @@
 'use strict';
 
 import Component from 'metal-component';
+import { core } from 'metal';
 import dom from 'metal-dom';
 import Soy from 'metal-soy';
 import { Align } from 'metal-position';
@@ -117,12 +118,33 @@ class MetalClayDropdown extends Dropdown {
 	 * @inheritDoc
 	 * @override
 	 */
+	setterPositionFn_(val) {
+		return val;
+	}
+
+	/**
+	 * Updates the positionInternal acording to the position attribute value. 
+	 * @param {string} value
+	 */
+	syncPosition(value) {
+		if (core.isNumber(value)) {
+			this.positionInternal = value;
+		}
+		else {
+			this.positionInternal = value.toLowerCase() === 'up' ? Align.TopLeft : Align.BottomLeft;
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 * @override
+	 */
 	syncExpanded(expanded) {
 		let alignElement = this.getTogglerElement_();
 		if (alignElement) {
 			if (expanded) {
 				let bodyElement = this.refs.dropdownmenu;
-				this.alignedPosition = Align.align(bodyElement, alignElement, this.position);
+				this.alignedPosition = Align.align(bodyElement, alignElement, this.positionInternal);
 				this.keyBoardManager.start();
 			}
 			else {
@@ -204,6 +226,15 @@ MetalClayDropdown.STATE = {
 	header: {
 		isHtml: true
 	},
+
+	/**
+	 * The internal representation of the position attribute.
+	 * @instance
+	 * @memberof MetalClayDropdown
+	 * @type {string}
+	 * @default down
+	 */
+	positionInternal: Config.number().internal(),
 
 	/**
 	 * Says if the Dropdown Menu will be rendered or not.

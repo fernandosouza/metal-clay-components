@@ -5,13 +5,35 @@
 		<title>Demo: Metal Clay Dropdown</title>
 
 		<link rel="stylesheet" href="../node_modules/clay/build/css/atlas-font-awesome.css">
+		<link rel="stylesheet" href="../build/all.css">
+		<link rel="stylesheet" href="demo.css">
 		<script src="../build/globals/metal-clay-dropdown.js"></script>
 	</head>
 	<body>
-		<h1>Metal Clay Dropdown</h1>
+		<div class="container">
+			<div class="row">
+				<div class="col-12 col-md-9">
+					<h1>Metal Clay Dropdown</h1>
 
+					<div class="demo-container">
+						<div class="demo demo-delegated-trigger">
+							<button type="button" class="btn btn-primary delegated-trigger">Delegated Trigger</button>
+						</div>
+
+						<div class="demo demo-delegated-default">
+						</div>
+
+						<div class="demo demo-delegated-body-header">
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
 		<script type="text/javascript">
-			new metal.MetalClayDropdown({
+			delegatedDropDown = new metal.MetalClayDropdown({
+				alignElementSelector: '.delegated-trigger',
+				position: 'up',
 				dropdownItems: [{
 					component: 'header',
 					label: 'Dropdown Header'
@@ -27,7 +49,7 @@
 					label: 'Item 2'
 				}],
 				dropdownToggle: {
-					elementClasses: 'btn btn-link',
+					elementClasses: 'btn btn-primary',
 					href: '#1',
 					icon: {
 						spritemap: '../node_modules/clay/build/images/icons/icons.svg',
@@ -58,7 +80,7 @@
 					label: 'Link 2'
 				},
 				elementClasses: 'dropdown-wide'
-			});
+			}, '.demo-delegated-default');
 
 			new metal.MetalClayDropdown({
 				body: `
@@ -69,7 +91,7 @@
 						<li class="dropdown-item"><a href="#">Separated link</a></li>
 					</ul>`,
 				header: '<button data-onclick="toggle" class="btn btn-primary">Dropdown</button>'
-			});
+			}, '.demo-delegated-body-header');
 		</script>
 	</body>
 </html>
