@@ -4,11 +4,10 @@ const path = require('path');
 module.exports = {
   entry: './src/MetalClayButton.js',
   resolve: {
-    modules: [path.resolve(__dirname, "node_modules")],
-    // alias: {
-    //     'metal-soy-bundle': path.resolve(__dirname, 'node_modules/metal-soy-bundle/'),
-    //     'metal-incremental-dom': path.resolve(__dirname, 'node_modules/metal-incremental-dom/')
-    // }
+    alias: {
+        'metal-soy-bundle': path.resolve(__dirname, 'node_modules/metal-soy-bundle/'),
+        'metal-incremental-dom': path.resolve(__dirname, 'node_modules/metal-incremental-dom/')
+    }
   },
   module: {
     rules: [{
@@ -22,6 +21,9 @@ module.exports = {
                 plugins: ['babel-plugin-transform-node-env-inline']
             }
         }
+    }, {
+        test: /\.html$/,
+        loader: "html-loader"
     }]
   },
   output: {

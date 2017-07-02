@@ -2,15 +2,13 @@
 
 import MetalClayButton from '../src/MetalClayButton';
 
-const FIXTURE_DIR = 'test/fixture/';
-
-const DEFAULT_BUTTON = __html__[FIXTURE_DIR + 'testDefaultMetalClayButton.html'].trim();
-const DEFAULT_BUTTON_WITH_ARIA_LABEL = __html__[FIXTURE_DIR + 'testMetalClayButtonWithAriaLabel.html'].trim();
-const DEFAULT_BUTTON_WITH_LABEL = __html__[FIXTURE_DIR + 'testMetalClayButtonWithLabel.html'].trim();
-const DEFAULT_BUTTON_WITH_NAME = __html__[FIXTURE_DIR + 'testMetalClayButtonWithName.html'].trim();
-const DISABLED_BUTTON = __html__[FIXTURE_DIR + 'testDisabledMetalClayButton.html'].trim();
-const SUBMIT_BUTTON = __html__[FIXTURE_DIR + 'testSubmitMetalClayButton.html'].trim();
-const SUCCESS_BUTTON = __html__[FIXTURE_DIR + 'testSuccessMetalClayButton.html'].trim();
+import testDefaultMetalClayButton from './fixture/testDefaultMetalClayButton.html';
+import testMetalClayButtonWithAriaLabel from './fixture/testMetalClayButtonWithAriaLabel.html';
+import testMetalClayButtonWithLabel from './fixture/testMetalClayButtonWithLabel.html';
+import testMetalClayButtonWithName from './fixture/testMetalClayButtonWithName.html';
+import testDisabledMetalClayButton from './fixture/testDisabledMetalClayButton.html';
+import testSubmitMetalClayButton from './fixture/testSubmitMetalClayButton.html';
+import testSuccessMetalClayButton from './fixture/testSuccessMetalClayButton.html';
 
 let sample;
 
@@ -24,7 +22,7 @@ describe('MetalClayButton', function() {
 	it('should generate the default markup', function() {
 		sample = new MetalClayButton();
 
-		assert.strictEqual(sample.element.outerHTML, DEFAULT_BUTTON);
+		assert.strictEqual(sample.element.outerHTML, testDefaultMetalClayButton.trim());
 	});
 
 	it('should render a submit button', function() {
@@ -32,7 +30,7 @@ describe('MetalClayButton', function() {
 			type: 'submit'
 		});
 
-		assert.strictEqual(sample.element.outerHTML, SUBMIT_BUTTON);
+		assert.strictEqual(sample.element.outerHTML, testSubmitMetalClayButton.trim());
 	});
 
 	it('should render a disabled button', function() {
@@ -40,7 +38,7 @@ describe('MetalClayButton', function() {
 			disabled: true
 		});
 
-		assert.strictEqual(sample.element.outerHTML, DISABLED_BUTTON);
+		assert.strictEqual(sample.element.outerHTML, testDisabledMetalClayButton.trim());
 	});
 
 	it('should render a success button', function() {
@@ -48,7 +46,7 @@ describe('MetalClayButton', function() {
 			style: 'success'
 		});
 
-		assert.strictEqual(sample.element.outerHTML, SUCCESS_BUTTON);
+		assert.strictEqual(sample.element.outerHTML, testSuccessMetalClayButton.trim());
 	});
 
 	it('should render a button with label', function() {
@@ -56,7 +54,7 @@ describe('MetalClayButton', function() {
 			label: 'Label'
 		});
 
-		assert.strictEqual(sample.element.outerHTML, DEFAULT_BUTTON_WITH_LABEL);
+		assert.strictEqual(sample.element.outerHTML, testMetalClayButtonWithLabel.trim());
 	});
 
 	it('should render a button with label', function() {
@@ -64,7 +62,7 @@ describe('MetalClayButton', function() {
 			name: 'myButton'
 		});
 
-		assert.strictEqual(sample.element.outerHTML, DEFAULT_BUTTON_WITH_NAME);
+		assert.strictEqual(sample.element.outerHTML, testMetalClayButtonWithName.trim());
 	});
 
 	it('should render a link with ariaLabel attribute', function() {
@@ -74,6 +72,6 @@ describe('MetalClayButton', function() {
 			label: 'Visit Liferay.com'
 		});
 
-		assert.strictEqual(sample.element.outerHTML, DEFAULT_BUTTON_WITH_ARIA_LABEL);
+		assert.strictEqual(sample.element.outerHTML, testMetalClayButtonWithAriaLabel.trim());
 	});
 });
